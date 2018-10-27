@@ -1,4 +1,4 @@
-package curl
+package gurl
 
 import (
 	"bytes"
@@ -14,7 +14,7 @@ import (
 	"time"
 )
 
-type curl struct {
+type gurl struct {
 	url    string
 	data   interface{}
 	body   BodyType
@@ -44,18 +44,18 @@ const (
 )
 
 // New request
-func New(method, url string) *curl {
-	return &curl{url: url, method: method}
+func New(method, url string) *gurl {
+	return &gurl{url: url, method: method}
 }
 
 // Set options
-func (this *curl) Set(option Option) *curl {
+func (this *gurl) Set(option Option) *gurl {
 	this.option = option
 	return this
 }
 
 // Set data and the type, default is JSON
-func (this *curl) Data(data interface{}, body ...BodyType) *curl {
+func (this *gurl) Data(data interface{}, body ...BodyType) *gurl {
 	this.data = data
 	if len(body) > 0 {
 		this.body = body[0]
@@ -66,31 +66,31 @@ func (this *curl) Data(data interface{}, body ...BodyType) *curl {
 }
 
 // Set params
-func (this *curl) Param(param map[string]string) *curl {
+func (this *gurl) Param(param map[string]string) *gurl {
 	this.param = param
 	return this
 }
 
 // Set headers
-func (this *curl) Header(header map[string]string) *curl {
+func (this *gurl) Header(header map[string]string) *gurl {
 	this.header = header
 	return this
 }
 
 // Set cookies
-func (this *curl) Cookie(cookie map[string]string) *curl {
+func (this *gurl) Cookie(cookie map[string]string) *gurl {
 	this.cookie = cookie
 	return this
 }
 
 // Set custom client
-func (this *curl) Client(client http.Client) *curl {
+func (this *gurl) Client(client http.Client) *gurl {
 	this.client = client
 	return this
 }
 
 // Combined urls and parameters
-func (this *curl) urlWithParam() (err error) {
+func (this *gurl) urlWithParam() (err error) {
 	if this.param == nil {
 		return
 	}
@@ -111,7 +111,7 @@ func (this *curl) urlWithParam() (err error) {
 	return
 }
 
-func (this *curl) request() (response Response, err error) {
+func (this *gurl) request() (response Response, err error) {
 	if this.url == "" {
 		return nil, errors.New("No url")
 	} else {
@@ -186,7 +186,7 @@ func (this *curl) request() (response Response, err error) {
 	return
 }
 
-func (this *curl) Do() (body []byte, header http.Header, err error) {
+func (this *gurl) Do() (body []byte, header http.Header, err error) {
 	var resp Response
 	if resp, err = this.request(); err != nil {
 		return
