@@ -111,7 +111,7 @@ func (this *gurl) urlWithParam() (err error) {
 	return
 }
 
-func (this *gurl) request() (response Response, err error) {
+func (this *gurl) Request() (response Response, err error) {
 	if this.url == "" {
 		return nil, errors.New("No url")
 	} else {
@@ -179,22 +179,14 @@ func (this *gurl) request() (response Response, err error) {
 	this.client.Timeout = opt.Timeout
 
 	response, err = this.client.Do(request)
-	if err != nil {
-		return
-	}
-
 	return
 }
 
-func (this *gurl) Do() (body []byte, header http.Header, err error) {
+func (this *gurl) Do() (body []byte, err error) {
 	var resp Response
-	if resp, err = this.request(); err != nil {
+	if resp, err = this.Request(); err != nil {
 		return
 	}
-	header = resp.Header
 	body, err = ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return
-	}
 	return
 }
